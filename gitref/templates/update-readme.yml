@@ -19,7 +19,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install GitRef
-        run: pip install git+https://github.com/guttlein/GitRef.git
+        run: pip install git+https://github.com/CGutt-hub/gitref.git
 
       - name: Reconcile and regenerate
         run: |

@@ -37,7 +37,7 @@ def main() -> None:
     cl = sub.add_parser("close", help="Re-compact a PDF after use")
     cl.add_argument("key", help="Entry key")
     sub.add_parser("compact", help="Compress all uncompressed PDFs")
-    sub.add_parser("watch", help="Watch resources/ — auto-add dropped PDFs, auto-repack on close")
+    sub.add_parser("watch", help="Watch resources/ - auto-add dropped PDFs, auto-repack on close")
 
     args = p.parse_args()
     lib: str = str(Path(args.library).resolve())
@@ -63,7 +63,7 @@ def main() -> None:
                 print(f"Fetch failed: {e}", file=sys.stderr); sys.exit(1)
         dupes = metadata.find_duplicates(lib, meta.get("title", ""), meta.get("doi", ""))
         if dupes:
-            print(f"⚠ Possible duplicates: {[d['key'] for d in dupes]}")
+            print(f"[!] Possible duplicates: {[d['key'] for d in dupes]}")
         pdf: str = "" if args.no_download else fetcher.auto_download(meta, lib)
         if pdf: print(f"Downloaded: {pdf}")
         entry = metadata.add_entry(lib, title=meta.get("title", ""),
@@ -86,17 +86,17 @@ def main() -> None:
                 for e2 in entries:
                     if e2["key"] == entry["key"]: e2["pdf"] = packed
                 metadata.save(lib, entries)
-        print(f"Added: {entry['key']} \u2014 {entry['title']}")
+        print(f"Added: {entry['key']} - {entry['title']}")
 
     elif args.command == "search":
         for e in metadata.find(lib, args.query):
             auth = ", ".join(e.get("authors", [])[:2])
-            print(f"  [{e.get('year', '')}] {auth} — {e.get('title', '')}")
+            print(f"  [{e.get('year', '')}] {auth} - {e.get('title', '')}")
 
     elif args.command == "list":
         for e in metadata.load(lib):
             auth = ", ".join(e.get("authors", [])[:2])
-            print(f"  [{e.get('year', '')}] {e.get('key', '')} | {auth} — {e.get('title', '')}")
+            print(f"  [{e.get('year', '')}] {e.get('key', '')} | {auth} - {e.get('title', '')}")
 
     elif args.command == "collections":
         for tag, n in metadata.collections(lib).items():
@@ -106,7 +106,7 @@ def main() -> None:
         entries = metadata.load(lib)
         out = Path(lib) / f"library.{args.format}"
         out.write_text(metadata.export_ris(entries), encoding="utf-8")
-        print(f"Exported {len(entries)} entries → {out}")
+        print(f"Exported {len(entries)} entries -> {out}")
 
     elif args.command == "sync":
         print(f"Sync: {repo.sync(lib)}")

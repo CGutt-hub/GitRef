@@ -63,7 +63,7 @@ class _H(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/json"); self.end_headers()
         self.wfile.write(json.dumps({"ok": True, "title": entry["title"],
                                      "key": entry["key"], "file": entry.get("pdf", "")}).encode())
-        print(f"  Saved: {entry['key']} — {entry['title']}" +
+        print(f"  Saved: {entry['key']} - {entry['title']}" +
               (f" [{entry['pdf']}]" if entry.get("pdf") else ""))
 
     def _cors(self) -> None:

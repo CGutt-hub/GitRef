@@ -39,7 +39,7 @@ def init_repo(path: str) -> Path:
     readme = repo / "README.md"
     if not readme.exists():
         readme.write_text(
-            "# References\n\nManaged by [GitRef](https://github.com/guttlein/GitRef).\n"
+            "# References\n\nManaged by [GitRef](https://github.com/CGutt-hub/gitref).\n"
             "Browse the library in [`resources/resources.md`](resources/resources.md).\n",
             encoding="utf-8",
         )

@@ -67,7 +67,7 @@ def _add_loose_pdf(library: str, path: Path) -> Entry | None:
         title=stem,
         pdf_filename=f"{metadata.RESOURCES}/{fname}",
     )
-    print(f"  Auto-added: {entry['key']} — {stem}")
+    print(f"  Auto-added: {entry['key']} - {stem}")
     return entry
 
 
@@ -150,8 +150,8 @@ def run(library: str) -> None:
     observer.schedule(handler, str(res), recursive=False)
     observer.start()
     print(f"Watching {res}  (Ctrl+C to stop)")
-    print("  • Drop a PDF here to auto-add it to the library")
-    print("  • Modified PDFs are auto-repacked after closing your viewer")
+    print("  - Drop a PDF here to auto-add it to the library")
+    print("  - Modified PDFs are auto-repacked after closing your viewer")
 
     try:
         while True:
@@ -163,7 +163,7 @@ def run(library: str) -> None:
         observer.stop()
         observer.join()
         # Pack everything back for compact git storage
-        print("\nPacking loose PDFs…")
+        print("\nPacking loose PDFs...")
         packed = metadata.pack_all(library)
         if packed:
             print(f"Packed {packed} PDF(s) into archive.")
