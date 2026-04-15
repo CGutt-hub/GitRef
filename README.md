@@ -4,32 +4,22 @@ A git-based reference manager — like Zotero, but your library is a plain git r
 
 ## Install
 
-### Download (recommended)
+### pip (recommended)
 
-Grab the latest release from the [**Releases page**](https://github.com/CGutt-hub/gitref/releases/latest):
-
-| Platform | Download |
-|----------|----------|
-| **Windows** | [`gitref.exe`](https://github.com/CGutt-hub/gitref/releases/latest/download/gitref.exe) |
-| **Linux (AppImage)** | [`GitRef-x86_64.AppImage`](https://github.com/CGutt-hub/gitref/releases/latest/download/GitRef-x86_64.AppImage) |
-| **Linux (binary)** | [`gitref`](https://github.com/CGutt-hub/gitref/releases/latest/download/gitref) |
-
-**Windows:** Move `gitref.exe` somewhere on your PATH (e.g. `C:\Users\<you>\AppData\Local\GitRef\`), or run the installer:
-```powershell
-irm https://raw.githubusercontent.com/CGutt-hub/gitref/main/install.ps1 | iex
-```
-
-**Linux:** Make the AppImage executable and move it:
 ```bash
-chmod +x GitRef-x86_64.AppImage
-sudo mv GitRef-x86_64.AppImage /usr/local/bin/gitref
-```
-Or use the one-liner:
-```bash
-curl -fsSL https://raw.githubusercontent.com/CGutt-hub/gitref/main/install.sh | bash
+pip install gitref
 ```
 
-### From source (pip)
+### Standalone binary
+
+Download from the [**Releases page**](https://github.com/CGutt-hub/gitref/releases/latest):
+
+| Platform | Asset | Install |
+|----------|-------|---------|
+| **Windows** | `gitref.exe` | Move to a folder on your PATH, or run: `irm https://raw.githubusercontent.com/CGutt-hub/gitref/main/install.ps1 \| iex` |
+| **Linux** | `GitRef-x86_64.AppImage` or `gitref` | `chmod +x` and move to `/usr/local/bin/`, or run: `curl -fsSL https://raw.githubusercontent.com/CGutt-hub/gitref/main/install.sh \| bash` |
+
+### From source
 
 ```bash
 pip install git+https://github.com/CGutt-hub/gitref.git
@@ -45,7 +35,7 @@ pip install git+https://github.com/CGutt-hub/gitref.git
 - **Clickable links** – `resources.md` has direct PDF links when watcher is running
 - **Git sync** – auto-commit + pull + push to keep your library in sync across machines
 - **Terminal UI** – interactive browser with search, detail view, tagging
-- **Browser bookmarklet** – one-click save from any paper page
+- **Browser extension** – one-click save from any paper page (like Zotero Connector)
 
 ## Quick start
 
@@ -78,17 +68,23 @@ gitref sync
 3. Drop a PDF into `resources/` and it's auto-added to the library
 4. Close your PDF viewer (or just hit Ctrl+C on the watcher) — files are repacked
 
-## Browser bookmarklet
+## Browser extension
+
+GitRef includes a Chrome/Edge extension (Manifest V3) that works like the Zotero Connector — click the toolbar icon on any paper page to save it to your library.
+
+### Setup
 
 1. Start the local server:
    ```bash
    gitref serve
    ```
-2. Create a new bookmark in your browser with this URL:
-   ```
-   javascript:(function(){var u=window.location.href,t=document.title,d=document.querySelector('meta[name="citation_doi"]')||document.querySelector('meta[name="dc.identifier"]');if(d){var v=d.getAttribute("content");if(v&&v.match(/^10\./))u="https://doi.org/"+v}fetch("http://127.0.0.1:7342/save",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({url:u,title:t})}).then(r=>r.json()).then(d=>{var e=document.createElement("div");e.textContent="GitRef: saved — "+d.title;e.style.cssText="position:fixed;top:10px;right:10px;z-index:999999;padding:12px 20px;border-radius:8px;font:14px/1.4 sans-serif;color:#fff;background:#2ea043;box-shadow:0 2px 8px rgba(0,0,0,.3)";document.body.appendChild(e);setTimeout(()=>e.remove(),3000)}).catch(()=>{var e=document.createElement("div");e.textContent="GitRef: failed — is gitref serve running?";e.style.cssText="position:fixed;top:10px;right:10px;z-index:999999;padding:12px 20px;border-radius:8px;font:14px/1.4 sans-serif;color:#fff;background:#d73a49;box-shadow:0 2px 8px rgba(0,0,0,.3)";document.body.appendChild(e);setTimeout(()=>e.remove(),3000)})})()
-   ```
-3. Navigate to any paper page and click the bookmarklet — the reference is saved to your library.
+2. Load the extension:
+   - Open `chrome://extensions` (or `edge://extensions`)
+   - Enable **Developer mode**
+   - Click **Load unpacked** and select the `extension/` folder from this repo
+3. Navigate to any paper page and click the GitRef icon — the reference (and PDF if available) is saved automatically.
+
+The extension auto-detects DOIs, arXiv IDs, and citation metadata from the page, just like Zotero Connector.
 
 ## Library structure
 
@@ -119,7 +115,7 @@ Run `gitref --help` for full usage. Key commands:
 | `gitref close <key>` | Repack a PDF into archive |
 | `gitref compact` | Pack all loose PDFs into archive |
 | `gitref sync` | Git add + commit + pull + push |
-| `gitref serve` | Start bookmarklet server (port 7342) |
+| `gitref serve` | Start server for browser extension (port 7342) |
 | `gitref export` | Export library as RIS |
 
 Use `-l <path>` to specify a custom library location (default: `~/GitRef`).

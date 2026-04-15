@@ -1,4 +1,4 @@
-"""Local HTTP server for browser extension / bookmarklet."""
+"""Local HTTP server for the browser extension."""
 
 from __future__ import annotations
 

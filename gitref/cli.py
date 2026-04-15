@@ -30,7 +30,7 @@ def main() -> None:
     sub.add_parser("collections", help="List tag collections")
     e = sub.add_parser("export", help="Export library")
     e.add_argument("format", nargs="?", default="ris", choices=["ris"])
-    sv = sub.add_parser("serve", help="Start bookmarklet server")
+    sv = sub.add_parser("serve", help="Start server for browser extension")
     sv.add_argument("-p", "--port", type=int, default=7342)
     o = sub.add_parser("open", help="Unpack a compacted PDF for reading/annotating")
     o.add_argument("key", help="Entry key")
