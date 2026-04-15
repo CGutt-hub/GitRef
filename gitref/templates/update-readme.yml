@@ -1,0 +1,38 @@
+name: GitRef sync
+
+on:
+  push:
+    paths:
+      - 'resources/**'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install GitRef
+        run: pip install git+https://github.com/guttlein/GitRef.git
+
+      - name: Reconcile and regenerate
+        run: |
+          python -c "
+          from gitref import metadata, build_readme
+          metadata.reconcile('.')
+          build_readme.update_readme('.')
+          "
+
+      - name: Commit changes
+        run: |
+          git config user.name "gitref[bot]"
+          git config user.email "gitref[bot]@users.noreply.github.com"
+          git add README.md resources/resources.md resources/.resources.bib resources/.resources.zip
+          git diff --cached --quiet || git commit -m "gitref: sync resources"
+          git push

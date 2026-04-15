@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: gitref
+Version: 0.1.0
+Summary: Git-based reference manager
+Project-URL: Repository, https://github.com/guttlein/GitRef
+Requires-Python: >=3.11
+Requires-Dist: rich>=13.0
+Requires-Dist: prompt_toolkit>=3.0
+Requires-Dist: watchdog>=3.0
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: ruff; extra == "dev"

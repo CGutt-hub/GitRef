@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gitref"
+version = "0.1.0"
+description = "Git-based reference manager"
+requires-python = ">=3.11"
+dependencies = [
+    "rich>=13.0",
+    "prompt_toolkit>=3.0",
+    "watchdog>=3.0",
+]
+
+[project.scripts]
+gitref = "gitref.cli:main"
+
+[project.urls]
+Repository = "https://github.com/CGutt-hub/gitref"
+
+[tool.setuptools.packages.find]
+include = ["gitref*"]
+
+[tool.setuptools.package-data]
+gitref = ["templates/*.yml"]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
